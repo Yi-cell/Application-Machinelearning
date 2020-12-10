@@ -19,15 +19,21 @@ def classifier(inx,dataset,labels,k):
     '''
     #dataset rowsize
     datasetsize = dataset.shape[0]
+    print('datasetsize :',datasetsize)
     #creat matrix 
     diffmat = np.tile(inx,(datasetsize,1))-dataset 
+    print('diffmat:',diffmat)
     #sum of square
     sq_diffmat = diffmat**2
+    print('sq_diffmat',sq_diffmat)
     sqdistance = sq_diffmat.sum(axis=1)
+    print('sqdostance',sqdistance)
     #calculate distance
     distances = sqdistance**0.5
+    print('distances',distances)
     #order by distance
     sorted_distance_indices = distances.argsort()
+    print('sorted_distance_indices :',sorted_distance_indices)
     #
     class_count={}
     for i in range(k):
@@ -36,6 +42,8 @@ def classifier(inx,dataset,labels,k):
         
     sorted_class_count = sorted(class_count.items(),key=operator.itemgetter(1),reverse=True)
     return sorted_class_count[0][0]
+    print('class_count:',class_count)
+    
 if __name__ == '__main__':
     group,labels = create_dataset()
 
