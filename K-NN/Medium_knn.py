@@ -17,7 +17,7 @@ def classifier(inx,dataset,labels,k):
     '''
     #dataset rowsize
     datasetsize = dataset.shape[0]
-    print('datasetsize :',datasetsize)
+    '''print('datasetsize :',datasetsize)'''
     #creat matrix 
     diffmat = np.tile(inx,(datasetsize,1))-dataset 
     '''print('diffmat:',diffmat)'''
