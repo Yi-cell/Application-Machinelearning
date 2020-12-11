@@ -20,18 +20,18 @@ def classifier(inx,dataset,labels,k):
     print('datasetsize :',datasetsize)
     #creat matrix 
     diffmat = np.tile(inx,(datasetsize,1))-dataset 
-    print('diffmat:',diffmat)
+    '''print('diffmat:',diffmat)'''
     #sum of square
     sq_diffmat = diffmat**2
-    print('sq_diffmat',sq_diffmat)
+    '''print('sq_diffmat',sq_diffmat)'''
     sqdistance = sq_diffmat.sum(axis=1)
-    print('sqdostance',sqdistance)
+    '''print('sqdostance',sqdistance)'''
     #calculate distance
     distances = sqdistance**0.5
-    print('distances',distances)
+    '''print('distances',distances)'''
     #order by distance
     sorted_distance_indices = distances.argsort()
-    print('sorted_distance_indices :',sorted_distance_indices)
+    '''print('sorted_distance_indices :',sorted_distance_indices)'''
     #
     class_count={}
     for i in range(k):
@@ -39,8 +39,8 @@ def classifier(inx,dataset,labels,k):
         class_count[vote_label] = class_count.get(vote_label,0)+1
         
     sorted_class_count = sorted(class_count.items(),key=operator.itemgetter(1),reverse=True)
-    print(class_count)
-    print(sorted_class_count)
+    '''print(class_count)'''
+    '''print(sorted_class_count)'''
     return sorted_class_count[0][0]   
 
 def file_matrix(filename):
