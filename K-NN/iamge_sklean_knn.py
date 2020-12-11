@@ -30,7 +30,7 @@ def classifier():
         file_name = training_file_list[i]
         class_number = int(file_name.split('_')[0])
         # adding the classnumber to the test labels
-        test_labels.append(file_number)
+        test_labels.append(class_number)
         # save each file into the matrix
         training_mat[i,:] = img_to_vector('trainingDigits/%s' % (file_name))
     # build the classifier
@@ -44,7 +44,7 @@ def classifier():
     # number of test file
     test_file_number = len(test_file_list)
     # test
-    for i in range(test_file_list):
+    for i in range(test_file_number):
         # get the name
         file_name = test_file_list[i]
         class_number = int(file_name.split('_')[0])
@@ -54,9 +54,9 @@ def classifier():
         print('classifier results: %d\t real results:%d' % (classifier_results,class_number))
         if (classifier_results != class_number):
             error_count += 1.0
-        print("the number of error:%d/n error rate:%f%%" %(error_count,error_count/test_file_number*100))
+    print("the number of error:%d/n error rate:%f%%" %(error_count,error_count/test_file_number*100))
 
 
 
-        if __name__ =='__main__':
-            classifier()
+if __name__ =='__main__':
+    classifier()
