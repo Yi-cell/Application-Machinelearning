@@ -16,6 +16,7 @@ def classifier(inx,dataset,labels,k):
     k: choose k points which has smartest distance
     Return:
     sorted_class_count[0][0]: classification results
+    print for the checking result
     '''
     #dataset rowsize
     datasetsize = dataset.shape[0]
@@ -41,9 +42,11 @@ def classifier(inx,dataset,labels,k):
         class_count[vote_label] = class_count.get(vote_label,0)+1
         
     sorted_class_count = sorted(class_count.items(),key=operator.itemgetter(1),reverse=True)
-    return sorted_class_count[0][0]
-    print('class_count:',class_count)
-    
+    print(class_count)
+    print(sorted_class_count)
+    return sorted_class_count[0][0]   
+
+
 if __name__ == '__main__':
     group,labels = create_dataset()
 
