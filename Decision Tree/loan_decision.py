@@ -58,3 +58,32 @@ def split_dataset(dataset,axis,value):
             remove_feature_vector.extend(features[axis+1:])
             new_dataset.append(remove_feature_vector)
     return new_dataset
+
+def optimal_feature(dataset):
+    '''
+    Parameter:
+    dataset: dataset
+    Returns: 
+    opt_feature: the optimal feature index
+    '''
+    num_features = len(dataset[0])-1 # number of features
+    entropy = empirical_entropy(dataset) # get the entropy
+    optimal_information_gain = 0.0
+    opt_feature = -1
+    for i in range(num_features):
+        #get all the features in i
+        feature_list = [example[i] for example in dataset]
+        unique_vals = set(feature_list)
+        new_entropy = 0.0
+
+        for value in unique_vals:
+            #calculate the empirical entropy
+            new_dataset = split_dataset(dataset,i,value)
+            prob = len(new_dataset) / float(len(dataset))
+            new_entropy += prob * empirical_entropy(new_dataset) 
+        information_gain = entropy - new_entropy
+
+        if (information_gain > optimal_information_gain):
+            optimal_information_gain = information_gain
+            opt_featurev = i
+        return opt_feature
