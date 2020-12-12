@@ -85,5 +85,5 @@ def optimal_feature(dataset):
 
         if (information_gain > optimal_information_gain):
             optimal_information_gain = information_gain
-            opt_featurev = i
+            opt_feature = i
         return opt_feature
