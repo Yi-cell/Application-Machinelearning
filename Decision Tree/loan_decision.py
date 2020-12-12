@@ -21,3 +21,40 @@ def empirical_entropy(dataset):
         prob = float(label_counts[key]) / rows
         Ent -= prob * log(prob,2)
     return Ent
+
+def create_dataset():
+    '''
+    creat a dataset
+    '''
+    dataset = [ [0, 0, 0, 0, 'no'],                        
+                [0, 0, 0, 1, 'no'],
+                [0, 1, 0, 1, 'yes'],
+                [0, 1, 1, 0, 'yes'],
+                [0, 0, 0, 0, 'no'],
+                [1, 0, 0, 0, 'no'],
+                [1, 0, 0, 1, 'no'],
+                [1, 1, 1, 1, 'yes'],
+                [1, 0, 1, 2, 'yes'],
+                [1, 0, 1, 2, 'yes'],
+                [2, 0, 1, 2, 'yes'],
+                [2, 0, 1, 1, 'yes'],
+                [2, 1, 0, 1, 'yes'],
+                [2, 1, 0, 2, 'yes'],
+                [2, 0, 0, 0, 'no']]
+    labels = ['Age','Job','Property','Credit']
+    return dataset, labels
+
+def split_dataset(dataset,axis,value):
+    '''
+    Parameters:
+    dataset: dataset
+    axis: features
+    value: the value of features
+    '''
+    new_dataset = []
+    for features in dataset:
+        if features[axis] == value:
+            remove_feature_vector = features[:axis]
+            remove_feature_vector.extend(features[axis+1:])
+            new_dataset.append(remove_feature_vector)
+    return new_dataset
