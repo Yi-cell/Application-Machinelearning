@@ -81,7 +81,7 @@ def optimal_feature(dataset):
             new_dataset = split_dataset(dataset,i,value)
             prob = len(new_dataset) / float(len(dataset))
             new_entropy += prob * empirical_entropy(new_dataset) 
-        information_gain = entropy - new_entropy
+            information_gain = entropy - new_entropy
 
         if (information_gain > optimal_information_gain):
             optimal_information_gain = information_gain
