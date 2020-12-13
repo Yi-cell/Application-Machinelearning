@@ -1,4 +1,5 @@
 from math import log
+import matplotlib.pyplot as plt 
 import operator 
 
 def empirical_entropy(dataset):
@@ -126,6 +127,61 @@ def create_tree(dataset,labels,feature_labels):
         sub_labels = labels[:]
         my_tree[best_features_labels][value] = create_tree(split_dataset(dataset,best_features,value),sub_labels,feature_labels)
     return my_tree
+
+
+
+
+''' Decision tree visualization'''
+def get_leafs(my_tree):
+    '''
+    Parameter:
+        my_tree: decision tree
+    Return:
+        num_leafs: number of leaf nodes
+    '''
+    num_leafs = 0
+    first_string = next(iter(my_tree))
+    second_dict = my_tree[first_string]
+    for key in second_dict.key():
+        if type(second_dict[key].__name__ == 'dict':
+            num_leafs += get_leafs(second_dict[key]))
+        else:
+            num_leafs += 1
+    return num_leafs
+
+
+def get_tree_depth(my_tree):
+    '''
+    Parameter:
+        my_tree: decision tree
+    Return:
+        max_depth: the depth of decision tree
+    '''
+    max_depth = 0
+    first_string = next(iter(my_tree))
+    second_dict = my_tree[first_string]
+    for key in second_dict.keys():
+        if type(second_dict[key]).__name__ =='dict':
+            depth = 1 + get_tree_depth(second_dict[key])
+        else:
+            depth = 1
+        if depth > max_depth: 
+            max_depth = depth
+    return max_depth
+
+def plot_node(node_name,position,arrow,node_type):
+    '''
+    Parameter:
+        node_name: node name 
+        position: the text position 
+        arrow: the arrow position
+        node_type: type of node
+    Return:
+        None
+    '''
+    
+
+
 
 if __name__ == '__main__':
     dataset, labels = create_dataset()
