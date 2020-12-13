@@ -1,13 +1,12 @@
 from math import log
 import operator 
-'''
-'''
+
 def empirical_entropy(dataset):
     '''
     Parameter:
-    dataset: dataset
+        dataset: dataset
     Retrun:
-    Ent: empirical entropy
+        Ent: empirical entropy
     '''
     rows = len(dataset) #return the rows of dataset
     label_counts = {} #save the counts of labels
@@ -47,9 +46,9 @@ def create_dataset():
 def split_dataset(dataset,axis,value):
     '''
     Parameters:
-    dataset: dataset
+        dataset: dataset
     axis: features
-    value: the value of features
+        value: the value of features
     '''
     new_dataset = []
     for features in dataset:
@@ -62,9 +61,9 @@ def split_dataset(dataset,axis,value):
 def optimal_feature(dataset):
     '''
     Parameter:
-    dataset: dataset
+        dataset: dataset
     Returns: 
-    opt_feature: the optimal feature index
+        opt_feature: the optimal feature index
     '''
     num_features = len(dataset[0])-1 # number of features
     entropy = empirical_entropy(dataset) # get the entropy
@@ -87,3 +86,53 @@ def optimal_feature(dataset):
             optimal_information_gain = information_gain
             opt_feature = i
         return opt_feature
+
+def majority_count(classlist):
+    '''
+    Parameter:
+        classlist: class lsit
+    Return:
+        sorted_class_count[0][0]: the most count of class
+    '''
+    class_count={}
+    for vote in classlist:
+        if vote not in class_count.keys():class_count[vote]=0
+        class_count[vote] += 1
+    sorted_class_count = sorted(class_count.items(), key = operator.itemgetter(1),reverse=True)
+    return sorted_class_count[0][0]
+
+def create_tree(dataset,labels,feature_labels):
+    '''
+    Parameter:
+        dataset: train dataset
+        labels: class labels
+        feature_labels: save the optimal class labels
+    '''
+    classlist = [example[-1] for example in dataset]
+    if classlist.count(classlist[0] == len(classlist)):# if the class completely same then stop split
+         return classlist[0]
+    if len(dataset[0]) == 1 or len(labels) == 0:
+        return majority_count(classlist)
+    best_features = optimal_feature(dataset)
+    best_features_labels = labels[best_features]
+    feature_labels.append(best_features_labels)
+    my_tree = {best_features_labels:{}}
+    del(labels[best_features])
+    feature_values = [example[best_features] for example in dataset]
+    unique_vals = set(feature_values)
+    for value in unique_vals:
+        sub_labels = labels[:]
+        my_tree[best_features_labels][value] = create_tree(split_dataset(dataset,best_features,value),sub_labels,feature_labels)
+    return my_tree
+
+if __name__ == '__main__':
+    dataset, labels = create_dataset()
+    feature_labels=[]
+    my_tree = create_tree(dataset,labels,feature_labels)
+    print(my_tree)
+
+
+
+
+
+
