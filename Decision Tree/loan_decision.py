@@ -68,7 +68,7 @@ def optimal_feature(dataset):
         opt_feature: the optimal feature index
     '''
     num_features = len(dataset[0])-1 # number of features
-    entropy = empirical_entropy(dataset) # get the entropy
+    entropy = empirical_entropy(dataset) # get the figure of entropy
     optimal_information_gain = 0.0
     opt_feature = -1
     for i in range(num_features):
@@ -82,12 +82,12 @@ def optimal_feature(dataset):
             new_dataset = split_dataset(dataset,i,value)
             prob = len(new_dataset) / float(len(dataset))
             new_entropy += prob * empirical_entropy(new_dataset) 
-            information_gain = entropy - new_entropy
+        information_gain = entropy - new_entropy
 
         if (information_gain > optimal_information_gain):
             optimal_information_gain = information_gain
             opt_feature = i
-        return opt_feature
+    return opt_feature
 
 def majority_count(classlist):
     '''
@@ -111,7 +111,7 @@ def create_tree(dataset,labels,feature_labels):
         feature_labels: save the optimal class labels
     '''
     classlist = [example[-1] for example in dataset]
-    if classlist.count(classlist[0] == len(classlist)):# if the class completely same then stop split
+    if classlist.count(classlist[0]) == len(classlist):# if the class completely same then stop split
          return classlist[0]
     if len(dataset[0]) == 1 or len(labels) == 0:
         return majority_count(classlist)
