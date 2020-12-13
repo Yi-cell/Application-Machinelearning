@@ -12,13 +12,13 @@ def empirical_entropy(dataset):
     label_counts = {} #save the counts of labels
     for features in dataset:
         current_label = features[-1]
-        if current_label not in label_counts.keys():
+        if current_label not in label_counts.keys(): # count the labels 
             label_counts[current_label] = 0
         label_counts[current_label] += 1
     Ent = 0.0 #Empirical entropy
     for key in label_counts:
-        prob = float(label_counts[key]) / rows
-        Ent -= prob * log(prob,2)
+        prob = float(label_counts[key]) / rows # the probability of labels
+        Ent -= prob * log(prob,2) # calculate the the entropy 
     return Ent
 
 def create_dataset():
@@ -47,15 +47,17 @@ def split_dataset(dataset,axis,value):
     '''
     Parameters:
         dataset: dataset
-    axis: features
+        axis: features
         value: the value of features
+    Return:
+        return a dataset
     '''
     new_dataset = []
     for features in dataset:
         if features[axis] == value:
-            remove_feature_vector = features[:axis]
-            remove_feature_vector.extend(features[axis+1:])
-            new_dataset.append(remove_feature_vector)
+            remove_axis_vector = features[:axis] # remove the axis feature
+            remove_axis_vector.extend(features[axis+1:])
+            new_dataset.append(remove_axis_vector)
     return new_dataset
 
 def optimal_feature(dataset):
