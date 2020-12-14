@@ -144,6 +144,7 @@ def get_leafs(my_tree):
     second_dict = my_tree[first_string]
     for key in second_dict.key():
         if type(second_dict[key].__name__ == 'dict':
+
             num_leafs += get_leafs(second_dict[key]))
         else:
             num_leafs += 1
@@ -179,7 +180,63 @@ def plot_node(node_name,position,arrow,node_type):
     Return:
         None
     '''
-    
+    arrow_args = dict(arrowstyle = '<-')
+    createPlot.ax1.annotate(node_name,xy=arrow,xycoords='axes fraction',xytext = position,
+    textcoords='axes fraction',va='center',ha='center',bbox = node_type,arrowprops=arrow_args)
+
+def plot_text(center,parent,text):
+    '''
+    Parameter:
+        center,parent: locating the position
+        text: the content
+    Return:
+        None
+    '''
+    x = (parent[0]-center[0])/2.0 + center[0]
+    y = (parent[1]-center[1])/2.0 + center[1]
+    createPlot.ax1.text(x,y,text,va ='center',ha='center',rotation =30)
+
+def plot_tree(my_tree,parent,text):
+    decision_node = dict(boxstyle = 'sawtooth',fc = '0.8')
+    leaf_node = dict(boxstyle='round4',fc='0.8')
+    num_leafs =get_leafs(my_tree)
+    depth = get_tree_depth(my_tree)
+    first_string = next(iter(my_tree))
+    center = (plot_tree.xoff + (1.0 + float(num_leafs))/2.0/plot_tree.totalW,plot_tree.yOff)
+    plot_text(center,parent,text)
+    plot_node(first_string,center,parent,decision_node)
+
+    second_dict = my_tree[first_string]
+    plot_tree.yOff = plot_tree.yOff - 1.0/plot_tree.totalD 
+   
+    for key in second_dict.keys():
+        if type(second_dict[key]).__name__ =='dict':
+            plot_tree(second_dict[key],center,str(key))
+
+        else:
+            plot_tree.xOff = plot_tree.xOff + 1.0/plot_tree.totalW
+            plot_node(second_dict[key],(plot_tree.xOff,plot_tree.yOff),center,leaf_node)
+            plot_text((plot_tree.xOff,plot_tree.yOff), center,str(key))
+
+    plot_tree.yOff = plot_tree.yOff + 1.0 / plot_tree.totalD
+
+def create_plot(intree):
+    '''
+    Parameter:
+        intree: my tree dictionary
+    Return:
+        None
+    '''
+    fig = plt.figure(1, facecolor='white')
+    fig.clf()
+    axprops = dict(xticks=[],yticks=[])
+    create_plot.ax1 = plt.subplot(111,frameon=False,**axprops)
+    plot_tree.totalW = float(get_leafs(intree))
+    plot_tree.totalD =  float(get_tree_depth(intree))
+    plot_tree.xOff = -0.5 / plot_tree.totalW; plot_tree.yOff = 1.0
+    plot_tree(intree,(0.5,1.0),'')
+    plt.show()
+
 
 
 
@@ -188,6 +245,7 @@ if __name__ == '__main__':
     feature_labels=[]
     my_tree = create_tree(dataset,labels,feature_labels)
     print(my_tree)
+    create_plot(my_tree)
 
 
 
