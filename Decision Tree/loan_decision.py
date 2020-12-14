@@ -1,5 +1,6 @@
 from math import log
 import matplotlib.pyplot as plt 
+import pickle
 import operator 
 
 def empirical_entropy(dataset):
@@ -236,18 +237,67 @@ def create_plot(intree):
     plot_tree(intree,(0.5,1.0),'')
     plt.show()
 
+def classifier(tree,feature_labels,test_vector):
+    '''
+    Parameter:
+        tree: decision tree
+        feature_labels: optimal feature labels
+        test_vector: test list
+    Return:
+        class_label: results
+    '''
+    first_string = next(iter(tree))
+    second_dict = tree[first_string]
+    feature_index = feature_labels.index(first_string)
+    for key in second_dict.keys():
+        if type(second_dict[key]).__name__ =='dict':
+            class_label = classifier(second_dict[key],feature_labels,test_vector)
+        
+        else:
+            class_label = second_dict[key]
+    return class_label
 
+def store_tree(tree,filename):
+    '''
+    Parameter:
+        tree: decision tree
+        filname: save file name
+    Return:
+        None
+    '''
+    pickle.dump(tree, open(filename,'wb'))
 
+def grab_tree(filename):
+    '''
+    Parameter:
+        filename: tree filename
+    Return:
+        pickle.load(fr): dictionary of tree
+    '''
+    fr = open(filename,'rb')
+    return pickle.load(fr)
 
 if __name__ == '__main__':
     dataset, labels = create_dataset()
     feature_labels=[]
     my_tree = create_tree(dataset,labels,feature_labels)
+    ''' # Task 1
     print(my_tree)
     create_plot(my_tree)
-
-
-
-
-
+    '''
+    ''' # Task 2
+    test = [0,1]
+    result = classifier(my_tree,feature_labels,test)
+    if result =='yes':
+        print('loan grant')
+    if result =='no':
+        print('loan fail')
+    '''
+    ''' # Task 3
+    store_tree(my_tree,'classifier.txt')
+    '''
+    ''' # Task 4
+    a = grab_tree('classifier.txt')
+    print(a)
+    '''
 
