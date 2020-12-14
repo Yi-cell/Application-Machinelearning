@@ -142,10 +142,9 @@ def get_leafs(my_tree):
     num_leafs = 0
     first_string = next(iter(my_tree))
     second_dict = my_tree[first_string]
-    for key in second_dict.key():
-        if type(second_dict[key].__name__ == 'dict':
-
-            num_leafs += get_leafs(second_dict[key]))
+    for key in second_dict.keys():
+        if type(second_dict[key]).__name__ == 'dict':
+            num_leafs += get_leafs(second_dict[key])
         else:
             num_leafs += 1
     return num_leafs
@@ -181,7 +180,7 @@ def plot_node(node_name,position,arrow,node_type):
         None
     '''
     arrow_args = dict(arrowstyle = '<-')
-    createPlot.ax1.annotate(node_name,xy=arrow,xycoords='axes fraction',xytext = position,
+    create_plot.ax1.annotate(node_name,xy=arrow,xycoords='axes fraction',xytext = position,
     textcoords='axes fraction',va='center',ha='center',bbox = node_type,arrowprops=arrow_args)
 
 def plot_text(center,parent,text):
@@ -194,7 +193,7 @@ def plot_text(center,parent,text):
     '''
     x = (parent[0]-center[0])/2.0 + center[0]
     y = (parent[1]-center[1])/2.0 + center[1]
-    createPlot.ax1.text(x,y,text,va ='center',ha='center',rotation =30)
+    create_plot.ax1.text(x,y,text,va ='center',ha='center',rotation =30)
 
 def plot_tree(my_tree,parent,text):
     decision_node = dict(boxstyle = 'sawtooth',fc = '0.8')
@@ -202,7 +201,7 @@ def plot_tree(my_tree,parent,text):
     num_leafs =get_leafs(my_tree)
     depth = get_tree_depth(my_tree)
     first_string = next(iter(my_tree))
-    center = (plot_tree.xoff + (1.0 + float(num_leafs))/2.0/plot_tree.totalW,plot_tree.yOff)
+    center = (plot_tree.xOff + (1.0 + float(num_leafs))/2.0/plot_tree.totalW,plot_tree.yOff)
     plot_text(center,parent,text)
     plot_node(first_string,center,parent,decision_node)
 
