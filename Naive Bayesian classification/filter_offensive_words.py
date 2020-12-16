@@ -31,13 +31,32 @@ def set_words_vec(vocabulary_list,input_set):
         if word in vocabulary_list:
             return_vec[vocabulary_list.index(word)] = 1
         else:
-            print('The word: %s is not in my vocabulary list!') % word)
+            print('The word: %s is not in my vocabulary list!' % word)
     return return_vec
+def create_vocabulary_list(dataset):
+    '''
+    Parameter:
+        dataset: dataset
+    Returns:
+        vocabulary_set: vocabulary dataset list
+    '''
+    vocabulary_set =set([]) # create an empty and non-repeat list
+    for document in dataset:
+        vocabulary_set = vocabulary_set | set(document)
+    return list(vocabulary_set)
 
-    
+
+
 if __name__ == '__main__':
     posting_list, class_vector = load_dataset()
-    for each in posting_list:
+    ''' for each in posting_list:
         print(each)
-    print(class_vector)
-    
+        print(class_vector)
+    '''
+    print('postinglist:\n', posting_list)
+    my_vocab_list = create_vocabulary_list(posting_list)
+    print('my_vocab_list: \n', my_vocab_list)
+    train_matrix = []
+    for posting_doc in posting_list:
+        train_matrix.append(set_words_vec(my_vocab_list,posting_doc))
+    print('train matrix:\n',train_matrix)
