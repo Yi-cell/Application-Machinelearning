@@ -1,5 +1,8 @@
 from sklearn import tree
+from sklearn.preprocessing import LabelEncoder
 import pandas as pd 
+import pydotplus
+
 
 if __name__ =='__main__':
     fr = open('lenses.txt')
@@ -20,4 +23,11 @@ if __name__ =='__main__':
     print(lenses_dict)
     lenses_pd = pd.DataFrame(lenses_dict)
     print(lenses_pd)
+    # create label_encoder() to encode
+    le = LabelEncoder()
+    for col in lenses_pd.columns:
+        lenses_pd[col] = le.fit_transform(lenses_pd[col])
+    print(lenses_pd)    
+
+    # Visualizing the decision tree by Graphviz
     
