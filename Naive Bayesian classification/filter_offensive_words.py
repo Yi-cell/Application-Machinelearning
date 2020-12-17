@@ -1,4 +1,4 @@
-
+import numpy as np
 def load_dataset():
     '''
     Parameter:
@@ -45,14 +45,39 @@ def create_vocabulary_list(dataset):
         vocabulary_set = vocabulary_set | set(document)
     return list(vocabulary_set)
 
+def train_NB(train_matrix,train_category):
+    '''
+    Parameter:
+        train_matrix: return_vector
+        train_category: class_vector
+    Return:
+        p0_vector: the vector of probability of non-offensive words
+        p1_vector: the vector of probability of offensive words
+        p_abusive: the probability of the abusive words
+    '''
+    num_train_docs =len(train_matrix)
+    num_words = len(train_matrix[0])
+    p_abusive = sum(train_category) / float(num_train_docs)
+    p0_num = np.zeros(num_words); p1_num = np.zeros(num_words)
+    p0_denom = 0.0; p1_Denom = 0.0
+    for i in range(num_train_docs):
+        if train_category[i] == 1:
+            p1_num += train_matrix[i]
+            p1_Denom += sum(train_matrix[i])
+        else:
+            p0_num += train_matrix[i]
+            p0_denom += sum(train_matrix[i])
+    p1_vector = p1_num / p1_Denom
+    p0_vector = p0_num / p0_denom
 
+    return p0_vector, p1_vector, p_abusive
 
 if __name__ == '__main__':
     posting_list, class_vector = load_dataset()
     ''' for each in posting_list:
         print(each)
         print(class_vector)
-    '''
+    
     print('postinglist:\n', posting_list)
     my_vocab_list = create_vocabulary_list(posting_list)
     print('my_vocab_list: \n', my_vocab_list)
@@ -60,3 +85,14 @@ if __name__ == '__main__':
     for posting_doc in posting_list:
         train_matrix.append(set_words_vec(my_vocab_list,posting_doc))
     print('train matrix:\n',train_matrix)
+    '''
+    my_vocab_list = create_vocabulary_list(posting_list)
+    print('my_vocab_list: \n', my_vocab_list)
+    train_matrix = []
+    for postingdoc in posting_list:
+        train_matrix.append(set_words_vec(my_vocab_list,postingdoc))
+    p0v, p1v, pab = train_NB(train_matrix, class_vector)
+    print('p0v:\n',p0v)
+    print('p1v:\n',p1v)
+    print('classVec:\n',class_vector)
+    print('pab:\n',pab)
