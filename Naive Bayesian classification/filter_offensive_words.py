@@ -44,7 +44,26 @@ def create_vocabulary_list(dataset):
     for document in dataset:
         vocabulary_set = vocabulary_set | set(document)
     return list(vocabulary_set)
-
+def classifier(word_vector, p0vec,p1vec,pclass):
+    '''
+    Parameter:
+        word_vector: vector of words
+        p0vec: vector of probability of offensive words
+        p1vec: vector of probablity of non-offensive words
+        pclass: probablity of the file belongs to offensive
+    Return:
+        0: non-offensive
+        1: offensive
+    '''
+    p1 = reduce(lambda x,y: x*y, word_vector*p1vec) * pclass
+    p0 = reduce(lambda x,y: x*y, word_vector*p0vec) * (1.0-pclass)
+    print('p0:',p0)
+    print('p1:',p1)
+    if p1 > p0:
+        return 1
+    else:
+        return 0
+        
 def train_NB(train_matrix,train_category):
     '''
     Parameter:
