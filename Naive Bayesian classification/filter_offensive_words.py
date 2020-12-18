@@ -1,4 +1,5 @@
 import numpy as np
+from functools import reduce
 def load_dataset():
     '''
     Parameter:
@@ -63,7 +64,7 @@ def classifier(word_vector, p0vec,p1vec,pclass):
         return 1
     else:
         return 0
-        
+
 def train_NB(train_matrix,train_category):
     '''
     Parameter:
@@ -90,10 +91,33 @@ def train_NB(train_matrix,train_category):
     p0_vector = p0_num / p0_denom
 
     return p0_vector, p1_vector, p_abusive
+def testing():
+    list_posts, list_classes = load_dataset()
+    my_vocab_list = create_vocabulary_list(list_posts)
+    train_matrix = []
+    for postingdoc in list_posts:
+        train_matrix.append(set_words_vec(my_vocab_list,postingdoc))
+    p0v,p1v,pa = train_NB(np.array(train_matrix),np.array(list_classes))
+    test_entry = ['love','my','dalmation']
+    thisdoc = np.array(set_words_vec(my_vocab_list,test_entry))
+
+    if classifier(thisdoc,p0v,p1v,pa):
+        print(test_entry,'offensive')
+    else:
+        print(test_entry,'non-offensive')
+    test_entry = ['stupid','garbage']
+    thisdoc = np.array(set_words_vec(my_vocab_list,test_entry))
+
+    if classifier(thisdoc,p0v,p1v,pa):
+        print(test_entry,'offensive')
+    else:
+        print(test_entry,'non-offensive')
+
 
 if __name__ == '__main__':
+    '''
     posting_list, class_vector = load_dataset()
-    ''' for each in posting_list:
+        for each in posting_list:
         print(each)
         print(class_vector)
     
@@ -104,7 +128,7 @@ if __name__ == '__main__':
     for posting_doc in posting_list:
         train_matrix.append(set_words_vec(my_vocab_list,posting_doc))
     print('train matrix:\n',train_matrix)
-    '''
+    
     my_vocab_list = create_vocabulary_list(posting_list)
     print('my_vocab_list: \n', my_vocab_list)
     train_matrix = []
@@ -115,3 +139,5 @@ if __name__ == '__main__':
     print('p1v:\n',p1v)
     print('classVec:\n',class_vector)
     print('pab:\n',pab)
+    '''
+    testing()
