@@ -48,7 +48,7 @@ def bag_word_vector(vocab_list,inputset):
     Return:
         return_vector: words vector
     '''
-        return_vector = [0] * len(vocab_list)
+    return_vector = [0] * len(vocab_list)
     for word in inputset:
         if word in vocab_list:
             return_vector[vocab_list.index(word)] += 1
@@ -120,7 +120,25 @@ def spam_test():
     vocabulary_list = create_vocabulary_list(doc_list)
     train_set = list(range(50)); test_set = []
     for i in range(10):
-        
+        rand_index = int(random.uniform(0,len(train_set)))
+        test_set.append(train_set[rand_index])
+        del(train_set[rand_index])
+    train_matrix =[]; train_class =[]
+    for docindex in train_set:
+        train_matrix.append(set_words_vector(vocabulary_list,doc_list[docindex]))
+        train_class.append(class_list[docindex])
+    p0v,p1v,pa = train(np.array(train_matrix),np.array(train_class))
+    error_count = 0
+
+    for docindex in test_set:
+        word_vector = set_words_vector(vocabulary_list,doc_list[docindex])
+        if classifier(np.array(word_vector),p0v,p1v,pa) != class_list[docindex]:
+            error_count += 1
+            print('class error vector:', doc_list[docindex])
+    print('error rate: %.2f%%' % (float(error_count)/ len(test_set) * 100))
+
+
+
 
 
 if __name__ == '__main__':
