@@ -56,10 +56,15 @@ def classifier(word_vector, p0vec,p1vec,pclass):
         0: non-offensive
         1: offensive
     '''
+    '''
     p1 = reduce(lambda x,y: x*y, word_vector*p1vec) * pclass
     p0 = reduce(lambda x,y: x*y, word_vector*p0vec) * (1.0-pclass)
     print('p0:',p0)
     print('p1:',p1)
+    '''
+    p1 = sum(word_vector * p1vec) + np.log(pclass)
+    p0 = sum(word_vector * p0vec) + np.log(1.0 - pclass)
+  
     if p1 > p0:
         return 1
     else:
@@ -78,8 +83,8 @@ def train_NB(train_matrix,train_category):
     num_train_docs =len(train_matrix)
     num_words = len(train_matrix[0])
     p_abusive = sum(train_category) / float(num_train_docs)
-    p0_num = np.zeros(num_words); p1_num = np.zeros(num_words)
-    p0_denom = 0.0; p1_Denom = 0.0
+    p0_num = np.ones(num_words); p1_num = np.ones(num_words)
+    p0_denom = 2.0; p1_Denom = 2.0
     for i in range(num_train_docs):
         if train_category[i] == 1:
             p1_num += train_matrix[i]
@@ -87,8 +92,8 @@ def train_NB(train_matrix,train_category):
         else:
             p0_num += train_matrix[i]
             p0_denom += sum(train_matrix[i])
-    p1_vector = p1_num / p1_Denom
-    p0_vector = p0_num / p0_denom
+    p1_vector = np.log(p1_num / p1_Denom) # get the nature log 
+    p0_vector = np.log(p0_num / p0_denom)
 
     return p0_vector, p1_vector, p_abusive
 def testing():
