@@ -13,6 +13,34 @@ def load_dataset():
         label_matrix.append(int(line_array[2]))
     fr.close()
     return data_matrix, label_matrix
+def sigmoid(inx):
+    '''
+    '''
+    return 1.0/(1+np.exp(-inx))
+
+def grad_ascent(data_matrixin,class_label):
+    '''
+    Parameter:
+        data_matrix: dataset
+        class_label: data label
+    Return:
+        weight.getA(): the optimal weights dataset
+
+    '''
+    data_matrix = np.mat(data_matrixin)
+    label_matrix = np.mat(class_label).transpose()
+    m,n = np.shape(data_matrix) # m represent rows 
+    aplha = 0.001
+    max_cylcles = 500 
+    weights = np.ones((n,1))
+    for k in range(max_cylcles):
+        h = sigmoid(data_matrix * weights)
+        error = label_matrix - h
+        weights = weights + aplha * data_matrix.transpose() * error
+    return weights.getA()
+
+
+
 
 def plot_dataset():
     '''
@@ -36,4 +64,6 @@ def plot_dataset():
     plt.show()
 
 if __name__ == '__main__':
-    plot_dataset()
+    data_matrix, label_matrix =load_dataset()
+    print(grad_ascent(data_matrix,label_matrix))
+ 
