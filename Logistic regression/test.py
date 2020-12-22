@@ -42,7 +42,7 @@ def grad_ascent(data_matrixin,class_label):
 
 
 
-def plot_dataset():
+def plot_dataset(weights):
     '''
     '''
     data_matrix, label_matrix =load_dataset()
@@ -59,11 +59,14 @@ def plot_dataset():
     ax = fig.add_subplot(111)
     ax.scatter(xcord1,ycord1,s= 20,c='red',marker= 's', alpha=.5)
     ax.scatter(xcord2,ycord2, s=20, c='green',alpha=.5)
-    plt.title('Dataset')
+    x = np.arange(-3.0,3.0,0.1)
+    y = (-weights[0] - weights[1] * x) / weights[2]
+    ax.plot(x,y)
+    plt.title('BestFit')
     plt.xlabel('x') ; plt.ylabel('y')
     plt.show()
 
 if __name__ == '__main__':
     data_matrix, label_matrix =load_dataset()
-    print(grad_ascent(data_matrix,label_matrix))
- 
+    weights = grad_ascent(data_matrix,label_matrix)
+    plot_dataset(weights)
